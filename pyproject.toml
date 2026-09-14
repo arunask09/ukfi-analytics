@@ -7,7 +7,9 @@ authors = [
     { name = "arunsankarask", email = "arunsankar888@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "quantlib>=1.43",
+]
 
 [project.scripts]
 ukfi-analytics = "ukfi_analytics:main"
