@@ -29,7 +29,7 @@ milestone below lands in this repo as it's built, rather than arriving all at on
 | Milestone | Dates | Release | Delivers |
 |---|---|---|---|
 | **M0 — Conventions engine** *(current)* | Sep–Dec 2026 | `v0.1` | Repo skeleton, `daycount.py`, `calendar.py`, schedule generation, QuantLib parity table |
-| M1 — Bond analytics + point-in-time store | Jan–Apr 2027 | `v0.2` | Clean/dirty pricing, YTM, spread measures, a bitemporal store with look-ahead impossible by construction |
+| M1 — Bond analytics + point-in-time store | Jan–Apr 2027 | `v0.2` | Clean/dirty pricing, YTM, spread measures, a bitemporal **SQL** store (window functions, as-of joins) with look-ahead impossible by construction |
 | M2 — Curve diagnostics lab ★ | Apr–Jun 2027 | — | Interpolation-artefact study, PCA of the gilt curve, the Sept 2022 LDI crisis from public history |
 | M3 — Multi-curve bootstrapper + Jacobian risk ★★ | Jun–Sep 2027 | `v0.5` | SONIA discount + projection curves, global calibration, analytic dPV/dQuote risk |
 | M4 — Pricing & P&L explain ★★ | Sep–Nov 2027 | `v0.6` | Bond/swap/future/CDS risk, P&L explain (carry + roll + curve + spread + residual) |

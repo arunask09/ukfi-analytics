@@ -48,6 +48,13 @@ Shipping alongside the running system, not bolted on after: a golden-value regre
 QuantLib benchmark diff table, semantic model versioning, an architecture-decision-record (ADR)
 log, and structured logging.
 
+**On tooling scope, deliberately:** the M1 store is genuinely SQL — window functions, as-of joins —
+not an ORM wrapper around dataframes; that's a real, planned differentiator. Kafka and Spark are
+just as deliberately absent: a single-desk rates/credit book is a few GB, not big data, and forcing
+a streaming/distributed stack onto it is exactly the kind of unjustified tooling an experienced
+reviewer discounts on sight. M5 ships DuckDB/Polars instead, with the pandas timing that justified
+the choice and a short "when I'd reach for Spark instead" note — an honest answer beats a padded one.
+
 **Not at v1.0:** SABR / Hull–White / Bermudans and portfolio VaR/FRTB — deferred to 2028, dropped
 for hours, not importance.
 
@@ -62,15 +69,6 @@ because fluency in the latter two is time-under-tension, not intensity.
 | **Maths** | 2.0 | Strand A (1¼h) — sequenced just ahead of the build: day-count now, linear algebra for M1, stochastic calculus from Apr '27. Strand B (¾h) — Zhou/Crack/Mosteller, interview probability, from month one. |
 | **DSA** | 1.5 | 2 timed problems/week, ~15 core patterns, ~130 problems over 15 months. The auto-graded screen that runs before anyone opens the repo — minimum effective dose, spaced not crammed. |
 
-## Two environments
-
-The day splits itself: ~13–18 hrs/week total.
-
-| | When | Hours/wk | Machine | Work that fits |
-|---|---|---|---|---|
-| **Office** | Mon–Fri downtime | 5–10 | Work machine | FI theory, maths theory, DSA, interview probability — **no repo, no code, no commits** |
-| **Home** | Evenings + weekend | 8–10 | Personal machine | The build — implementation, tests, applied maths, commits, PRs |
-
 ## Two rules, non-negotiable
 
 **Clean room.** Nothing from work — no data, code, configs, conventions, or benchmarking against
@@ -78,9 +76,11 @@ a production system. Public data in, QuantLib as the only oracle. BoE yield curv
 and verified; DMO gilt data is a manual download, cached locally and never committed (their terms
 carry no open licence); CDS spreads and swaption vol are synthesised and labelled loudly.
 
-**Work machine.** The repo never touches company equipment. Most employment contracts claim IP
-for anything built on company hardware or time — a finance-adjacent public repo is exactly what
-those clauses target. Office hours are reading and paper problems only.
+**Work machine.** The repo never touches company equipment, regardless of when or where study
+happens. Most employment contracts claim IP for anything built on company hardware or time — a
+finance-adjacent public repo is exactly what those clauses target. Office-hours study is the
+learner's own initiative (retired as a Quant Mentor–scheduled track 2026-09-15) — reported
+verbally each evening before the build starts, not tracked here.
 
 ## Reading, bought just-in-time
 
@@ -88,7 +88,7 @@ No stack bought up front — each book lands right before the milestone that nee
 
 | When | Book | For |
 |---|---|---|
-| Now | Tuckman & Serrat, *Fixed Income Securities* 4e | Office reading — the FI book for the whole plan |
+| Now | Tuckman & Serrat, *Fixed Income Securities* 4e | The FI book for the whole plan — read whenever downtime allows |
 | Now | Zhou, *A Practical Guide to Quantitative Finance Interviews* | The probability strand — starts month one because it compounds |
 | Now (free) | McKinney, *Python for Data Analysis* 3e | M1/M2 pandas |
 | M0 | Ramalho, *Fluent Python* 2e (2022 ed.) | Deep language knowledge — the biggest gap on the shelf |
