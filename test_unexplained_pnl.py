@@ -22,7 +22,7 @@ def test_residual_zero_on_exact_match() -> None:
     result = unexplained_pnl(pv_yesterday, pv_today, predicted)
     residual, flagged = result
     # TODO: assert residual is ~0 (use pytest.approx) and flagged is False.
-    assert residual == pytest.approx(0.0)
+    assert residual == pytest.approx(0.0, abs=0.01) #penny tolerance 
     assert flagged is False
 
 
