@@ -18,3 +18,4 @@ __pycache__/
 # Generated plot outputs (re-created by scratch_curve_basics.py)
 curve_interp.png
 curve_interp_plotly.html
+.vscode/

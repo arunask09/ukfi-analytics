@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -6,6 +8,8 @@ from hypothesis import strategies as st
 
 from scratch_curve_basics import DF, linear_interp, pchip_interp
 
+GOLDEN_FILE = Path(__file__).parent / "golden_dfs_linear.csv"
+QUANTLIB_GOLDENS = list(pd.read_csv(GOLDEN_FILE, float_precision="round_trip").itertuples(index=False, name=None))
 
 def df_linear(t: float) -> float:
     return float(np.exp(-linear_interp(t) * t))
@@ -60,6 +64,13 @@ def test_zero_curve_has_six_pillars(zero_curve):
 def test_df_matches_golden(tenor: float, expected_df: float) -> None:
 
     assert DF.loc[tenor] == pytest.approx(expected_df, abs=1e-6)
+
+
+
+@pytest.mark.parametrize("tenor, quantlib_df", QUANTLIB_GOLDENS)
+def test_df_matches_quantlib(tenor: float, quantlib_df: float) -> None:
+    # sides agree to ~1e-16; 1e-12 is far above that noise but catches any real change to the curve maths
+    assert df_linear(tenor) == pytest.approx(quantlib_df, abs=1e-12)
 
 # def test_df_value_on_exact_match() -> None:
 #     df_1y=0.957241
