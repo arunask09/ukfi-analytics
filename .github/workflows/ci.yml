@@ -14,4 +14,4 @@ jobs:
       - run: uv sync --dev
       - run: uv run ruff check .
       - run: uv run mypy src
-      - run: uv run pytest
+      - run: uv run pytest --hypothesis-profile=ci
