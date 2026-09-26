@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-from scipy.interpolate import CubicSpline, interp1d
+from scipy.interpolate import CubicSpline, PchipInterpolator, interp1d
 
 # BoE nominal spot curve, [21 SEP 2026] -- from "GLC Nominal daily data current month.xlsx"
 tenors = [0.5, 1, 2, 5, 10, 30]
@@ -20,6 +20,7 @@ DF = pd.Series(
 )
 linear_interp = interp1d(tenors, zero_rate)
 cubic_interp = CubicSpline(tenors, zero_rate)
+pchip_interp = PchipInterpolator(tenors, zero_rate)
 
 print(zero_rate)
 print(DF)
