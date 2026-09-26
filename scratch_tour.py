@@ -24,11 +24,11 @@ deposit_quotes = {
     ql.Period(3, ql.Months): 0.0465,
 }
 swap_quotes = {
-    ql.Period(1, ql.Years): 0.0450,
-    ql.Period(2, ql.Years): 0.0420,
-    ql.Period(5, ql.Years): 0.0405,
-    ql.Period(10, ql.Years): 0.0410,
-    ql.Period(20, ql.Years): 0.0415
+    ql.Period(1, ql.Years): 0.0460,
+    ql.Period(2, ql.Years): 0.0430,
+    ql.Period(5, ql.Years): 0.0415,
+    ql.Period(10, ql.Years): 0.0420,
+    ql.Period(20, ql.Years): 0.0425
 }
 
 # --- 3. Wrap each quote so QuantLib can watch it for changes ---
@@ -106,7 +106,22 @@ schedule = ql.Schedule(
 bond = ql.FixedRateBond(settlement_days, 100.0, schedule, [coupon], day_counter)
 bond.setPricingEngine(ql.DiscountingBondEngine(curve_handle))
 
-print(f"Clean price (4% coupon): {bond.cleanPrice():.4f}")
+print(f"Clean price 4% coupon): {bond.cleanPrice():.4f}")
+
+fifteen_year = today + ql.Period(15, ql.Years)
+zero_15y = curve.zeroRate(fifteen_year, day_counter, ql.Continuous).rate()
+print(f"15y zero rate        : {zero_15y:.4%}")
+
+
+total_extra_pv = 0.0
+for years_ahead in range(1, 6):
+    coupon_date = today + ql.Period(years_ahead, ql.Years)
+    df = curve.discount(coupon_date)
+    total_extra_pv += df
+    print(f"{years_ahead}y discount factor: {df:.6f}")
+
+print(f"Sum of discount factors (= extra coupon PV): {total_extra_pv:.4f}")
+
 
 # ---------------------------------------------------------------------
 # YOUR TURN — do these one at a time, re-running the script after each.
