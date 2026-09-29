@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 import QuantLib as ql
 
@@ -22,4 +24,5 @@ for n in range(6, 361):          # 6, 7, 8, ..., 360 months (range stops BEFORE 
     rows.append((t, df))
 
 golden = pd.DataFrame(rows, columns=["t", "df"])
-golden.to_csv("golden_dfs_linear.csv", index=False)
+GOLDEN_FILE = Path(__file__).resolve().parent.parent / "tests" / "data" / "golden_dfs_linear.csv"
+golden.to_csv(GOLDEN_FILE, index=False)

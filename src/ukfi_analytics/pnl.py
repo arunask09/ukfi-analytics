@@ -16,7 +16,7 @@ knowledge/lessons/P1-time-value-of-money.md for the PV mechanics this builds on.
 TODO: pick THRESHOLD and justify the choice in a comment.
 TODO: implement unexplained_pnl().
 TODO: write the three tests described in the exercise spec (see docstring
-      below) -- in test_unexplained_pnl.py or wherever your suite expects it.
+      below) -- in tests/test_pnl.py or wherever your suite expects it.
 """
 
 THRESHOLD = 0.2  # TODO: pick a number (absolute £, or a % of PV?) and threshold can be bid ask spread value. so if the residual is higher or lower we can flag
@@ -49,7 +49,7 @@ def unexplained_pnl(pv_yesterday: float, pv_today: float, predicted: dict) -> tu
 
 
 # ---------------------------------------------------------------------------
-# Tests to write (in test_unexplained_pnl.py, or inline here with pytest if
+# Tests to write (in tests/test_pnl.py, or inline here with pytest if
 # you prefer for this scratch exercise):
 #
 # 1. residual ~= 0 when predicted's components sum exactly to

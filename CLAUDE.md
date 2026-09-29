@@ -37,7 +37,11 @@ deliberately deferred past `v1.0`.
 - No data, code, config, or convention from any employer or production system may enter this
   repo, at any point.
 
-**Top-level `scratch_*.py` files** (`scratch_tour.py`, `scratch_unexplained_pnl.py`) are hands-on
-exercises from the author's mentorship curriculum, not part of the shipped package. They contain
-intentional `TODO`s for the author to complete — don't silently "fix" or finish them unless
-explicitly asked to.
+**Layout (src layout):** `src/ukfi_analytics/` is the library (importable code only, nothing runs
+on import); `tests/` mirrors it, with golden files in `tests/data/`; `scripts/` holds runnable
+one-off tools (`make_golden_dfs.py`, `plot_curve_interp.py`); `notebooks/` is exploration only
+and imports from the library; `sandbox/` and `outputs/` are gitignored.
+
+**Mentorship exercises:** `src/ukfi_analytics/pnl.py` and the drills in `sandbox/` came from the
+author's mentorship curriculum. They contain intentional `TODO`s for the author to complete —
+don't silently "fix" or finish them unless explicitly asked to.

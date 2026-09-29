@@ -1,5 +1,5 @@
 """
-Tests for unexplained_pnl() — see scratch_unexplained_pnl.py.
+Tests for unexplained_pnl() — see src/ukfi_analytics/pnl.py.
 
 Three cases (from that file's docstring):
 1. residual ~= 0 when predicted's components sum exactly to the actual PV change.
@@ -9,7 +9,7 @@ Three cases (from that file's docstring):
 
 import pytest
 
-from scratch_unexplained_pnl import unexplained_pnl
+from ukfi_analytics.pnl import unexplained_pnl
 
 
 def test_residual_zero_on_exact_match() -> None:

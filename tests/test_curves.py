@@ -6,9 +6,9 @@ import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
-from scratch_curve_basics import DF, linear_interp, pchip_interp
+from ukfi_analytics.curves import DF, linear_interp, pchip_interp
 
-GOLDEN_FILE = Path(__file__).parent / "golden_dfs_linear.csv"
+GOLDEN_FILE = Path(__file__).parent / "data" / "golden_dfs_linear.csv"
 QUANTLIB_GOLDENS = list(pd.read_csv(GOLDEN_FILE, float_precision="round_trip").itertuples(index=False, name=None))
 
 def df_linear(t: float) -> float:
