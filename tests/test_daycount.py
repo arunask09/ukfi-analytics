@@ -2,10 +2,11 @@ from datetime import date
 
 import pytest
 import QuantLib as ql
-from hypothesis import strategies as st
 from hypothesis import given
+from hypothesis import strategies as st
 
 from ukfi_analytics.daycount import act_365f
+
 
 def to_ql(d: date) -> ql.Date:
     ql_date = ql.Date(d.day, d.month, d.year)
