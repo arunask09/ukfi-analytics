@@ -36,3 +36,7 @@ dev = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[[tool.mypy.overrides]]
+module = ["QuantLib"]
+ignore_missing_imports = true
