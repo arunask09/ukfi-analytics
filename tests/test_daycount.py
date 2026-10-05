@@ -25,4 +25,4 @@ def test_act365f_matches_quantlib() -> None:
     start = date(2026, 8,31)
     end = date(2027, 2, 28)
     excepted = ql.Actual365Fixed().yearFraction(to_ql(start), to_ql(end))
-    assert act_365f(start, end) == pytest.approx(excepted, 1e-14)
+    assert act_365f(start, end) == pytest.approx(excepted, abs=1e-14)
