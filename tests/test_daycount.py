@@ -31,12 +31,12 @@ def test_act_365f_matches_quantlib() -> None:
         start = st.dates(min_value=date(1901,1,1), max_value=date(2199,12,31)),
         end = st.dates(min_value=date(1901,1,1), max_value=date(2199,12,31))
 )
-def test_act_360_matches_quantlib(start: date, end: date) -> None:
+def test_act_360_matches_quantlib_random_dates(start: date, end: date) -> None:
     expected = ql.Actual360().yearFraction(to_ql(start), to_ql(end))
     assert act_360(start, end) == pytest.approx(expected, abs=1e-14)
 
-def test_act_360_matches_quantlib_fixed_rate() -> None:
+def test_act_360_matches_quantlib() -> None:
     start = date(2026, 8, 31)
-    end = date(2027, 12,31)
+    end = date(2027,2,28)
     expected = ql.Actual360().yearFraction(to_ql(start), to_ql(end))
     assert act_360(start, end) == pytest.approx(expected, abs=1e-14)
