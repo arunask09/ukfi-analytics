@@ -22,7 +22,9 @@ TODO: write the three tests described in the exercise spec (see docstring
 THRESHOLD = 0.2  # TODO: pick a number (absolute £, or a % of PV?) and threshold can be bid ask spread value. so if the residual is higher or lower we can flag
 
 
-def unexplained_pnl(pv_yesterday: float, pv_today: float, predicted: dict) -> tuple[float, bool]:
+def unexplained_pnl(
+    pv_yesterday: float, pv_today: float, predicted: dict
+) -> tuple[float, bool]:
     """
     Returns (residual, flagged).
 
@@ -45,7 +47,6 @@ def unexplained_pnl(pv_yesterday: float, pv_today: float, predicted: dict) -> tu
         flagged = False
     # TODO 5: return (residual, flagged)
     return (residual, flagged)
-    
 
 
 # ---------------------------------------------------------------------------
