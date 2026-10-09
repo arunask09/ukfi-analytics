@@ -9,10 +9,43 @@ from ukfi_analytics.calendar import (
     easter_sunday,
     fixed_holidays,
     paschal_full_moon,
+    uk_holidays,
     weekday_holidays,
     weekday_on_or_after,
     weekday_on_or_before,
 )
+
+UK_SET = [
+    (
+        2020,
+        {
+            date(2020, 1, 1),
+            date(2020, 4, 10),
+            date(2020, 4, 13),
+            date(2020, 5, 8),
+            date(2020, 5, 25),
+            date(2020, 8, 31),
+            date(2020, 12, 25),
+            date(2020, 12, 28),
+        },
+    ),  # VE Day move
+    (
+        2022,
+        {
+            date(2022, 1, 3),
+            date(2022, 4, 15),
+            date(2022, 4, 18),
+            date(2022, 5, 2),
+            date(2022, 6, 2),
+            date(2022, 6, 3),
+            date(2022, 8, 29),
+            date(2022, 9, 19),
+            date(2022, 12, 26),
+            date(2022, 12, 27),
+        },
+    ),  # spring move + jubilee + funeral
+]
+
 
 TEST_SET = [
     (2022, {date(2022, 1, 3), date(2022, 12, 26), date(2022, 12, 27)}),
@@ -73,3 +106,8 @@ def test_easter_sunday_properties(year: int) -> None:
     assert easter.weekday() == 6
     assert date(year, 3, 22) <= easter <= date(year, 4, 25)
     assert timedelta(days=1) <= gap <= timedelta(days=7)
+
+
+@pytest.mark.parametrize("year, expected", UK_SET)
+def test_uk_holidays(year, expected):
+    assert uk_holidays(year) == expected

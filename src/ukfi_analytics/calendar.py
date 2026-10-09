@@ -56,3 +56,29 @@ def easter_holidays(year: int) -> set[date]:
     """Bucket C: Good Friday and Easter Monday"""
     easter = easter_sunday(year)
     return {easter + timedelta(days=1), easter - timedelta(days=2)}
+
+
+MOVED_HOLIDAYS: dict[date, date] = {
+    date(1995, 5, 1): date(1995, 5, 8),  # early May → VE Day 50th
+    date(2002, 5, 27): date(2002, 6, 4),
+    date(2012, 5, 28): date(2012, 6, 4),
+    date(2020, 5, 4): date(2020, 5, 8),
+    date(2022, 5, 30): date(2022, 6, 2),
+}
+
+EXTRA_HOLIDAYS: set[date] = {
+    date(2002, 6, 3),
+    date(2011, 4, 29),
+    date(2012, 6, 5),
+    date(2022, 6, 3),
+    date(2022, 9, 19),
+    date(2023, 5, 8),
+}
+
+
+def uk_holidays(year: int) -> set[date]:
+    """England & Wales bank holidays: buckets A–C with moves applied, plus one-offs."""
+    regular = fixed_holidays(year) | weekday_holidays(year) | easter_holidays(year)
+    moved = {MOVED_HOLIDAYS.get(d, d) for d in regular}
+    extras = {d for d in EXTRA_HOLIDAYS if d.year == year}
+    return moved | extras
