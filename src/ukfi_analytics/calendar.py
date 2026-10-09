@@ -30,3 +30,29 @@ def weekday_holidays(year: int) -> set[date]:
         weekday_on_or_before(date(year, 5, 31), 0),
         weekday_on_or_before(date(year, 8, 31), 0),
     }
+
+
+def paschal_full_moon(year: int) -> date:
+
+    golden = year % 19 + 1
+    century = year // 100 + 1
+    solar = 3 * century // 4 - 12
+    lunar = (8 * century + 5) // 25 - 5
+    epact = (11 * golden + 20 + lunar - solar) % 30
+    if (epact == 25 and golden > 11) or epact == 24:
+        epact += 1
+    n = 44 - epact
+    if n < 21:
+        n += 30
+    return date(year, 3, 1) + timedelta(days=n - 1)
+
+
+def easter_sunday(year: int) -> date:
+    """First Sunday strictly after the paschal full moon"""
+    return weekday_on_or_after(paschal_full_moon(year) + timedelta(days=1), 6)
+
+
+def easter_holidays(year: int) -> set[date]:
+    """Bucket C: Good Friday and Easter Monday"""
+    easter = easter_sunday(year)
+    return {easter + timedelta(days=1), easter - timedelta(days=2)}
