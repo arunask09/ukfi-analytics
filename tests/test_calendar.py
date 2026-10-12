@@ -5,6 +5,7 @@ from hypothesis import given
 from hypothesis import strategies as st
 
 from ukfi_analytics.calendar import (
+    add_business_days,
     easter_holidays,
     easter_sunday,
     fixed_holidays,
@@ -128,3 +129,20 @@ def test_uk_holidays(year, expected):
 )
 def test_is_business_day_christmas_2026(d: date, expected: bool) -> None:
     assert is_business_day(d) == expected
+
+
+@pytest.mark.parametrize(
+    ("start", "n", "expected"),
+    [
+        (date(2026, 12, 24), 0, date(2026, 12, 24)),
+        (date(2026, 12, 25), 1, date(2026, 12, 29)),
+        (date(2026, 12, 26), 2, date(2026, 12, 30)),
+        (date(2026, 12, 27), 1, date(2026, 12, 29)),
+        (date(2026, 12, 28), 0, date(2026, 12, 28)),
+        (date(2026, 12, 29), 0, date(2026, 12, 29)),
+        (date(2026, 12, 30), 0, date(2026, 12, 30)),
+        (date(2026, 12, 31), 1, date(2027, 1, 4)),
+    ],
+)
+def test_add_business_days(start: date, n: int, expected: date) -> None:
+    assert add_business_days(start, n) == expected

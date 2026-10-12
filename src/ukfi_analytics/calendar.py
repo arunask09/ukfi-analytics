@@ -87,3 +87,14 @@ def uk_holidays(year: int) -> set[date]:
 def is_business_day(d: date) -> bool:
     """True if d is a weekday and not an England & Wales bank holiday."""
     return d.weekday() < 5 and d not in uk_holidays(d.year)
+
+
+def add_business_days(d: date, n: int) -> date:
+    """Move forward n business days from d (n >= 0)."""
+    current = d
+    count = 0
+    while count < n:
+        current = current + timedelta(days=1)
+        if is_business_day(current):
+            count += 1
+    return current
