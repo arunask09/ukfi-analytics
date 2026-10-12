@@ -8,6 +8,7 @@ from ukfi_analytics.calendar import (
     easter_holidays,
     easter_sunday,
     fixed_holidays,
+    is_business_day,
     paschal_full_moon,
     uk_holidays,
     weekday_holidays,
@@ -111,3 +112,19 @@ def test_easter_sunday_properties(year: int) -> None:
 @pytest.mark.parametrize("year, expected", UK_SET)
 def test_uk_holidays(year, expected):
     assert uk_holidays(year) == expected
+
+
+@pytest.mark.parametrize(
+    ("d", "expected"),
+    [
+        (date(2026, 12, 24), True),  # Thu, weekday
+        (date(2026, 12, 25), False),  # Fri, Christmas Day
+        (date(2026, 12, 26), False),  # Sat, weekend (Boxing Day moves to Mon 28)
+        (date(2026, 12, 27), False),  # Sun, Weekend
+        (date(2026, 12, 28), False),  # Mon, boxing day substitute
+        (date(2026, 12, 29), True),  # Tue, Business day
+        (date(2026, 12, 30), True),  # Wed, Business day
+    ],
+)
+def test_is_business_day_christmas_2026(d: date, expected: bool) -> None:
+    assert is_business_day(d) == expected

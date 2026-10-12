@@ -82,3 +82,8 @@ def uk_holidays(year: int) -> set[date]:
     moved = {MOVED_HOLIDAYS.get(d, d) for d in regular}
     extras = {d for d in EXTRA_HOLIDAYS if d.year == year}
     return moved | extras
+
+
+def is_business_day(d: date) -> bool:
+    """True if d is a weekday and not an England & Wales bank holiday."""
+    return d.weekday() < 5 and d not in uk_holidays(d.year)
