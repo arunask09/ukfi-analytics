@@ -142,6 +142,12 @@ def test_is_business_day_christmas_2026(d: date, expected: bool) -> None:
         (date(2026, 12, 29), 0, date(2026, 12, 29)),
         (date(2026, 12, 30), 0, date(2026, 12, 30)),
         (date(2026, 12, 31), 1, date(2027, 1, 4)),
+        (
+            date(2026, 12, 29),
+            -1,
+            date(2026, 12, 24),
+        ),  # backward over Christmas + Boxing Day substitute
+        (date(2027, 1, 4), -1, date(2026, 12, 31)),  # backward across the year boundary
     ],
 )
 def test_add_business_days(start: date, n: int, expected: date) -> None:
