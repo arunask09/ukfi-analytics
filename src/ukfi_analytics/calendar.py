@@ -1,4 +1,7 @@
 from datetime import date, timedelta
+from typing import Literal
+
+Convention = Literal["F", "MF", "P"]
 
 
 def fixed_holidays(year: int) -> set[date]:
@@ -99,3 +102,30 @@ def add_business_days(d: date, n: int) -> date:
         if is_business_day(current):
             count += 1
     return current
+
+
+def adjust(d: date, convention: Convention) -> date:
+    """Return d if it is a business day; otherwise roll it to an open day per the convention.
+
+    F = next open day
+    MF = equal to F unless F is in the next month, then P
+    P = preceding open day
+    """
+    if is_business_day(d):
+        return d
+
+    following = d
+    while not is_business_day(following):
+        following += timedelta(days=1)
+
+    preceding = d
+    while not is_business_day(preceding):
+        preceding += timedelta(days=-1)
+
+    if convention == "F":
+        return following
+    if convention == "P":
+        return preceding
+    if convention == "MF":
+        return following if following.month == d.month else preceding
+    raise ValueError(f"unknown convention: {convention}")

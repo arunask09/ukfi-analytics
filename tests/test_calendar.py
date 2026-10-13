@@ -5,7 +5,9 @@ from hypothesis import given
 from hypothesis import strategies as st
 
 from ukfi_analytics.calendar import (
+    Convention,
     add_business_days,
+    adjust,
     easter_holidays,
     easter_sunday,
     fixed_holidays,
@@ -152,3 +154,28 @@ def test_is_business_day_christmas_2026(d: date, expected: bool) -> None:
 )
 def test_add_business_days(start: date, n: int, expected: date) -> None:
     assert add_business_days(start, n) == expected
+
+
+@pytest.mark.parametrize(
+    ("d", "convention", "expected"),
+    [
+        # closed day, December: F and MF agree
+        (date(2026, 12, 25), "F", date(2026, 12, 29)),
+        (date(2026, 12, 25), "MF", date(2026, 12, 29)),
+        (date(2026, 12, 25), "P", date(2026, 12, 24)),
+        # closed day, end of Feb: F crosses into March, so MF falls back
+        (date(2027, 2, 27), "F", date(2027, 3, 1)),
+        (date(2027, 2, 27), "MF", date(2027, 2, 26)),
+        (date(2027, 2, 27), "P", date(2027, 2, 26)),
+        # open day: returned unchanged under every convention
+        (date(2026, 12, 24), "F", date(2026, 12, 24)),
+        (date(2026, 12, 24), "MF", date(2026, 12, 24)),
+        (date(2026, 12, 24), "P", date(2026, 12, 24)),
+        # year-end: F crosses into January
+        (date(2022, 12, 31), "F", date(2023, 1, 3)),
+        (date(2022, 12, 31), "MF", date(2022, 12, 30)),
+        (date(2022, 12, 31), "P", date(2022, 12, 30)),
+    ],
+)
+def test_adjust(d: date, convention: Convention, expected: date) -> None:
+    assert adjust(d, convention) == expected
