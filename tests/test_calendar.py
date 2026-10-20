@@ -149,6 +149,22 @@ def test_is_business_day_christmas_2026(d: date, expected: bool) -> None:
     assert is_business_day(d) == expected
 
 
+QL_CONVENTIONS = {"F": ql.Following, "MF": ql.ModifiedFollowing, "P": ql.Preceding}
+
+
+@pytest.mark.parametrize("convention", ["F", "MF", "P"])
+def test_adjust_matches_quantlib_every_day(convention: Convention) -> None:
+    mismatches = []
+    d = date(1950, 1, 1)
+    while d <= date(2199, 12, 31):
+        ours = to_ql(adjust(d, convention))
+        theirs = UK_SETTLEMENT.adjust(to_ql(d), QL_CONVENTIONS[convention])
+        if ours != theirs:
+            mismatches.append(d)
+        d += timedelta(days=1)
+    assert mismatches == []
+
+
 @pytest.mark.parametrize(
     ("start", "n", "expected"),
     [
