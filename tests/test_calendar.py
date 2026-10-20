@@ -4,11 +4,21 @@ from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
+import QuantLib as ql
 from hypothesis import given
 from hypothesis import strategies as st
 
+UK_SETTLEMENT = ql.UnitedKingdom(ql.UnitedKingdom.Settlement)
+
+
+def to_ql(d: date) -> ql.Date:
+    ql_date = ql.Date(d.day, d.month, d.year)
+    return ql_date
+
+
 GOLDEN_FILE = Path(__file__).parent / "data" / "golden_dfs_linear.csv"
 GOV_UK_FILE = Path(__file__).parent / "data" / "bank-holidays-2026-10-20.json"
+
 
 from ukfi_analytics.calendar import (
     Convention,
@@ -203,3 +213,13 @@ GOV_UK = gov_uk_holidays()
 @pytest.mark.parametrize("year", sorted(GOV_UK))
 def test_uk_holidays_match_gov_uk(year: int) -> None:
     assert uk_holidays(year) == GOV_UK[year]
+
+
+def test_is_business_day_matches_quantlib_every_day() -> None:
+    mismatches = []
+    d = date(1950, 1, 1)
+    while d <= date(2199, 12, 31):
+        if is_business_day(d) != UK_SETTLEMENT.isBusinessDay(to_ql(d)):
+            mismatches.append(d)
+        d += timedelta(days=1)
+    assert mismatches == []

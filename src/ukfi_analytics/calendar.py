@@ -70,6 +70,7 @@ MOVED_HOLIDAYS: dict[date, date] = {
 }
 
 EXTRA_HOLIDAYS: set[date] = {
+    date(1999, 12, 31),
     date(2002, 6, 3),
     date(2011, 4, 29),
     date(2012, 6, 5),
