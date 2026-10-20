@@ -1,8 +1,14 @@
+import json
+from collections import defaultdict
 from datetime import date, timedelta
+from pathlib import Path
 
 import pytest
 from hypothesis import given
 from hypothesis import strategies as st
+
+GOLDEN_FILE = Path(__file__).parent / "data" / "golden_dfs_linear.csv"
+GOV_UK_FILE = Path(__file__).parent / "data" / "bank-holidays-2026-10-20.json"
 
 from ukfi_analytics.calendar import (
     Convention,
@@ -179,3 +185,21 @@ def test_add_business_days(start: date, n: int, expected: date) -> None:
 )
 def test_adjust(d: date, convention: Convention, expected: date) -> None:
     assert adjust(d, convention) == expected
+
+
+def gov_uk_holidays() -> dict[int, set[date]]:
+    """England & Wales bank holidays from the gov.uk snapshot, grouped by year."""
+    events = json.loads(GOV_UK_FILE.read_text())["england-and-wales"]["events"]
+    by_year: dict[int, set[date]] = defaultdict(set)
+    for event in events:
+        d = date.fromisoformat(event["date"])
+        by_year[d.year].add(d)
+    return by_year
+
+
+GOV_UK = gov_uk_holidays()
+
+
+@pytest.mark.parametrize("year", sorted(GOV_UK))
+def test_uk_holidays_match_gov_uk(year: int) -> None:
+    assert uk_holidays(year) == GOV_UK[year]
